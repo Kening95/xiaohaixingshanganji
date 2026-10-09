@@ -1,3 +1,0 @@
-# Cloudflare 路由规则：所有页面地址交给 index.html（前端路由接管），子页面刷新不 404
-# /api/* 开头的请求由 worker.js 里的同步接口处理，不受影响
-/*    /index.html   200

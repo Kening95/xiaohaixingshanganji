@@ -22,3 +22,7 @@ main = "worker.js"
 # 静态网站文件目录（npm run build 的输出目录）
 [assets]
 directory = "./dist"
+# 单页应用（SPA）路由模式：访问 /map、/dashboard 等子页面时，
+# 平台自动返回 index.html 交给前端路由处理，刷新不会 404。
+# （等价于老版 Pages 的 _redirects 规则，但不用单独维护那个文件）
+not_found_handling = "single-page-application"

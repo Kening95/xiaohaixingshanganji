@@ -114,7 +114,7 @@
 | 部署日志报 `Wrangler requires at least Node.js v22` | Node 版本不够 | 环境变量 `NODE_VERSION` 改成 `22`，重试部署 |
 | 部署日志打印一大段 npm 帮助文字后失败 | `npm ci` 校验锁文件失败（package-lock 与 package.json 不同步） | 本地运行一次 `npm install`，`git add . && git commit && git push` 后再重试部署 |
 | 个人中心显示"同步失败" | KV 没绑定或绑定名不是 `SYNC_KV` | 回 3.2 检查，绑定后重试部署 |
-| 打开子页面 404 | 部署的代码不是最新（缺 `public/_redirects`） | 确认 `git push` 了最新代码，等自动部署完成 |
+| 打开子页面 404 | 部署的代码不是最新（缺 SPA 路由配置 `not_found_handling`） | 确认 `git push` 了最新代码（含 `wrangler.toml`），等自动部署完成 |
 | 改了环境变量/绑定但不生效 | 没重新部署 | 回 3.4 重试部署 |
 | 导入仓库时报 `Must be a GitHub or GitLab repository URL` | GitHub 没授权或没给该仓库权限 | 先点 Connect GitHub 完成授权；或到 github.com/settings/installations 给 Cloudflare 加上该仓库权限 |
 
