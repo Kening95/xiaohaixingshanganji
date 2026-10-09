@@ -1,0 +1,150 @@
+/**
+ * ============================================================================
+ * 粉蹄形象动画库 —— ft-animation.css
+ * ----------------------------------------------------------------------------
+ * 这里定义粉蹄（粉色海星）5 个基础状态的 CSS 动画。
+ * 动画全部用 CSS 实现（不用 JS），优点是性能高、写法简单、小白好改。
+ *
+ * 5 个状态对应需求清单"动态状态体系"：
+ *   idle    日常陪伴 —— 整只海星轻轻摇摆，萌系待机动画
+ *   cheer   完成任务 —— 举奖杯欢呼（弹跳 + 奖杯摇晃 + 彩带）
+ *   comfort 安抚鼓励 —— 歪头递棒棒糖（歪头 + 糖糖摇摆）
+ *   remind  学习提醒 —— 鼓脸提醒（腮帮子鼓动 + 小着急地蹦）
+ *   report  周报推送 —— 举周刊递周报（报纸上下递送）
+ *
+ * 使用方式（在 FtAvatar.vue 里）：
+ *   <div class="ft-avatar ft-state--idle">...</div>
+ *   只换 state 类名即可切换动画，无需改任何动画代码。
+ *
+ * 动效规范提醒：过渡类动画统一 0.3s（--duration-base），
+ * 循环待机动画可以长一些（1.6s~2.4s），因为那是"持续状态"而非"过渡"。
+ * ============================================================================
+ */
+
+/* ================= 各状态专属动画的关键帧定义 ================= */
+
+/* idle：整只海星轻轻摇摆，像在放松地听你说话 */
+@keyframes ft-star-sway {
+  0%, 100% { transform: rotate(0deg); }
+  50%      { transform: rotate(4deg); }
+}
+
+/* cheer：开心得跳起来 */
+@keyframes ft-cheer-bounce {
+  0%, 100% { transform: translateY(0); }
+  40%      { transform: translateY(-10px); }
+  60%      { transform: translateY(-10px); }
+}
+/* cheer：奖杯举高高并左右炫耀 */
+@keyframes ft-trophy-wave {
+  0%, 100% { transform: rotate(0deg); }
+  30%      { transform: rotate(-12deg); }
+  70%      { transform: rotate(12deg); }
+}
+/* cheer：彩带飘落 */
+@keyframes ft-confetti-fall {
+  0%   { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(26px) rotate(120deg); opacity: 0; }
+}
+
+/* comfort：歪头杀 + 棒棒糖轻轻摇晃 */
+@keyframes ft-head-tilt {
+  0%, 100% { transform: rotate(0deg); }
+  50%      { transform: rotate(-8deg); }
+}
+@keyframes ft-candy-sway {
+  0%, 100% { transform: rotate(0deg); }
+  50%      { transform: rotate(14deg); }
+}
+
+/* remind：鼓脸（腮帮子一鼓一鼓） */
+@keyframes ft-cheek-puff {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.35); }
+}
+/* remind：着急地小碎步蹦跶 */
+@keyframes ft-remind-hop {
+  0%, 100% { transform: translateY(0); }
+  25%      { transform: translateY(-4px); }
+  75%      { transform: translateY(-2px); }
+}
+
+/* report：把周报递到你面前（上下浮动） */
+@keyframes ft-report-bob {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50%      { transform: translateY(-8px) rotate(2deg); }
+}
+
+/* 所有粉蹄实例共用的呼吸感（轻微缩放，让形象始终是"活的"） */
+@keyframes ft-breathe {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.02); }
+}
+
+/* ================= 状态类：给根元素加 .ft-state--xxx 即切换状态 ================= */
+
+.ft-avatar {
+  /* 组件尺寸由调用方通过 --ft-size 传入，默认 96px */
+  width: var(--ft-size, 96px);
+  height: var(--ft-size, 96px);
+  display: inline-block;
+  animation: ft-breathe 2.4s ease-in-out infinite; /* 常驻呼吸感 */
+}
+
+/* 让 SVG 内部元素可以围绕自身中心旋转（晃耳朵/歪头都需要） */
+.ft-avatar svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible; /* 奖杯、彩带会超出身体范围，允许画出来 */
+}
+.ft-avatar .ft-part {
+  transform-box: fill-box;    /* 旋转/缩放围绕图形自身中心 */
+  transform-origin: center;
+}
+
+/* ---- idle：日常陪伴，整只海星轻轻摇摆 ---- */
+.ft-state--idle .ft-star {
+  animation: ft-star-sway 2.4s var(--easing-soft) infinite;
+}
+
+/* ---- cheer：举奖杯欢呼 ---- */
+.ft-state--cheer {
+  animation: ft-cheer-bounce 0.9s ease-in-out infinite;
+}
+.ft-state--cheer .ft-trophy {
+  animation: ft-trophy-wave 0.9s ease-in-out infinite;
+}
+.ft-state--cheer .ft-confetti {
+  animation: ft-confetti-fall 1.2s linear infinite;
+}
+
+/* ---- comfort：歪头递糖安抚 ---- */
+.ft-state--comfort .ft-head {
+  animation: ft-head-tilt 2.2s var(--easing-soft) infinite;
+}
+.ft-state--comfort .ft-candy {
+  animation: ft-candy-sway 2.2s var(--easing-soft) infinite;
+}
+
+/* ---- remind：鼓脸提醒 ---- */
+.ft-state--remind {
+  animation: ft-remind-hop 0.8s ease-in-out infinite;
+}
+.ft-state--remind .ft-cheek {
+  animation: ft-cheek-puff 0.8s ease-in-out infinite;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+
+/* ---- report：举周刊递周报 ---- */
+.ft-state--report .ft-paper {
+  animation: ft-report-bob 1.6s var(--easing-soft) infinite;
+}
+
+/* 无障碍偏好：用户系统开了"减少动态效果"时，关闭所有动画 */
+@media (prefers-reduced-motion: reduce) {
+  .ft-avatar,
+  .ft-avatar * {
+    animation: none !important;
+  }
+}

@@ -1,0 +1,128 @@
+/**
+ * ============================================================================
+ * 全局设计令牌（Design Tokens）—— tokens.css
+ * ----------------------------------------------------------------------------
+ * 这个文件是整套系统的"配色总开关"。
+ *
+ * 什么是设计令牌？
+ *   把所有颜色、间距、字号、动画时长等设计决定，集中定义成 CSS 变量。
+ *   页面里不写死颜色，而是引用变量，例如：background: var(--color-primary);
+ *
+ * 为什么这么做？
+ *   1. 改配色只需改这一个文件，全站自动生效
+ *   2. 保证全站颜色严格符合《需求核对确认清单》的配色规范，不会写偏
+ *
+ * 配色规范（来自需求清单 · 视觉配色规范模块）：
+ *   主色   天蓝 #E6F4FF —— 页面背景、全局大容器底色，清新护眼
+ *   辅助色 暖橙 #FFB86C —— 按钮高亮、进度条填充、重点提醒
+ *   强调色 浅粉 #FFE6F2 —— 粉蹄 IP 装饰、弹窗气泡、成就徽章背景
+ *   中性色 深灰 #333333（正文）/ 浅灰 #999999（辅助提示），无纯黑纯白
+ * ============================================================================
+ */
+
+:root {
+  /* ------------------------- 1. 品牌主色体系 ------------------------- */
+  /* 主色 · 天蓝：页面背景、大容器底色 */
+  --color-primary: #e6f4ff;
+  /* 主色的深色阶梯：同一色相逐渐加深，用于 hover、边框、渐变等 */
+  --color-primary-deep: #c9e6ff;   /* 稍深：卡片悬停、分割线 */
+  --color-primary-darker: #a5d4ff; /* 更深：边框、激活态 */
+
+  /* 辅助色 · 暖橙：按钮高亮、进度条填充、重点提醒 */
+  --color-accent: #ffb86c;
+  /* 暖橙的深色阶梯 */
+  --color-accent-deep: #f09f3e;    /* hover 态 */
+  --color-accent-darker: #d98317;  /* 按下态 */
+
+  /* 强调色 · 浅粉：粉蹄 IP 装饰、弹窗气泡、徽章背景 */
+  --color-highlight: #ffe6f2;
+  /* 浅粉的深色阶梯 */
+  --color-highlight-deep: #ffc7e0; /* 气泡边框、徽章描边 */
+  --color-star-pink: #fce9ef;       /* 粉蹄海星粉（参考图水彩淡粉） */
+
+  /* ------------------------- 2. 中性色体系 ------------------------- */
+  --color-text-primary: #333333;   /* 正文文字 */
+  --color-text-secondary: #999999; /* 辅助提示文字 */
+  --color-text-inverse: #ffffff;   /* 深底上的白字（注意不是纯黑纯白场景） */
+
+  /* ------------------------- 3. 语义化颜色 ------------------------- */
+  /* 语义化 = 按用途起名，页面写用途不写色值 */
+  --color-bg-page: var(--color-primary);        /* 页面大背景 = 天蓝 */
+  --color-bg-card: #ffffff;                     /* 卡片底色（柔和白，不刺眼） */
+  --color-bg-bubble: var(--color-highlight);    /* 气泡/徽章底色 = 浅粉 */
+  --color-border: var(--color-primary-darker);  /* 通用边框 */
+  --color-success: #7bc87c;                     /* 成功/完成（柔和绿） */
+  --color-warning: var(--color-accent);         /* 提醒/警告（暖橙） */
+
+  /* ------------------------- 4. 字体规范 ------------------------- */
+  /* 系统无衬线字体栈：优先用各系统自带的圆润字体，长时间阅读不累眼 */
+  --font-family-base:
+    -apple-system, 'PingFang SC', 'HarmonyOS Sans SC',
+    'Microsoft YaHei', 'Segoe UI', sans-serif;
+  --font-size-base: 14px;      /* 正文字号下限 14px（需求规范） */
+  --font-size-lg: 16px;
+  --font-size-xl: 20px;
+  --font-size-title: 24px;
+  --line-height-base: 1.6;     /* 全局行高 1.6（需求规范） */
+
+  /* ------------------------- 5. 间距规范 ------------------------- */
+  /* 所有元素留白 >= 16px（需求规范），这里定义统一的间距阶梯 */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;   /* 基础留白单位 */
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-xxl: 48px;
+
+  /* 圆角：软萌风格统一用大圆角 */
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-round: 999px; /* 完全圆形（徽章、头像用） */
+
+  /* ------------------------- 6. 阴影 ------------------------- */
+  /* 柔和投影，符合软萌风格，不做生硬黑影 */
+  --shadow-card: 0 4px 16px rgba(51, 51, 51, 0.08);
+  --shadow-float: 0 8px 24px rgba(51, 51, 51, 0.12);
+
+  /* ------------------------- 7. 动效规范 ------------------------- */
+  /* 所有过渡动画时长控制在 0.3s（需求规范），统一在这里管理 */
+  --duration-fast: 0.15s;
+  --duration-base: 0.3s;
+  --easing-soft: cubic-bezier(0.4, 0, 0.2, 1); /* 轻柔缓动曲线 */
+
+  /* ------------------------- 8. 地图风景背景 ------------------------- */
+  /* 主地图"天空→大海→沙滩"渐变风景的配色变量。
+     默认值就是蓝天白云大海沙滩；core/scene 模块（自定义背景功能）会
+     在运行时覆盖这些变量，让用户可以自己调色或换成图片背景。 */
+  --scene-sky-light: #e6f4ff;                     /* 天空（顶部，最浅） */
+  --scene-sky: #a9dcff;                           /* 天空（往下渐深） */
+  --scene-sea-light: #bfe6f7;                     /* 海面（靠天空一侧） */
+  --scene-sea: #5fb4dd;                           /* 大海（中间横带） */
+  --scene-sand: #ffe9c2;                          /* 沙滩（上部） */
+  --scene-sand-deep: #ffd9a0;                     /* 沙滩（底部） */
+  --scene-sun: rgba(255, 246, 205, 0.95);         /* 太阳（设为全透明 = 隐藏） */
+}
+
+/* ------------------------- 9. Element Plus 主题定制 ------------------------- */
+/*
+ * Element Plus 组件库默认是蓝色主题，和粉蹄的天蓝+暖橙规范不完全一致。
+ * 官方支持用 CSS 变量覆盖主题色：只要覆盖它内部的 --el-color-primary 系列变量，
+ * 所有按钮、弹窗、进度条等组件就会自动换成我们的配色，不需要逐个改样式。
+ */
+:root {
+  /* 把 Element Plus 的主色替换成暖橙（按钮高亮用） */
+  --el-color-primary: var(--color-accent);
+  --el-color-primary-light-3: #ffc98f;
+  --el-color-primary-light-5: #ffd6ab;
+  --el-color-primary-light-7: #ffe3c7;
+  --el-color-primary-light-8: #ffe9d3;
+  --el-color-primary-light-9: #fff0e0;
+  --el-color-primary-dark-2: var(--color-accent-deep);
+  /* 正文文字色同步成深灰 */
+  --el-text-color-primary: var(--color-text-primary);
+  --el-text-color-regular: var(--color-text-primary);
+  --el-text-color-secondary: var(--color-text-secondary);
+  /* 圆角统一为软萌大圆角 */
+  --el-border-radius-base: var(--radius-sm);
+}

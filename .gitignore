@@ -1,0 +1,12 @@
+# 依赖安装目录（npm install 自动生成，不需要提交到代码仓库）
+node_modules
+
+# 构建产物（npm run build 生成）
+dist
+
+# 本地环境文件（存放个人电脑上的私有配置，不能公开）
+*.local
+.env
+
+# 日志文件
+*.log

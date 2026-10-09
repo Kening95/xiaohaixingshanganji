@@ -1,0 +1,127 @@
+/**
+ * ============================================================================
+ * 全局基础样式 —— base.css
+ * ----------------------------------------------------------------------------
+ * 作用：给整个网页打地基。
+ *   1. 清除浏览器默认样式的差异（不同浏览器对 h1、body 的默认边距不一样）
+ *   2. 设置全局字体、行高、背景色
+ *   3. 定义几个全站通用工具类（卡片、气泡等）
+ * 颜色一律引用 tokens.css 里定义的变量，不要在这里写死色值。
+ * ============================================================================
+ */
+
+/* ---------- 1. 现代浏览器 reset：统一各浏览器的默认表现 ---------- */
+*,
+*::before,
+*::after {
+  /* box-sizing: border-box 让 width 包含边框和内边距，
+     是所有现代项目的事实标准，避免尺寸计算混乱 */
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  /* 正文字号基准，同时方便用 rem 单位做适配 */
+  font-size: var(--font-size-base);
+}
+
+body {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  color: var(--color-text-primary);
+  /* 页面大背景 = 主色天蓝，清新护眼 */
+  background-color: var(--color-bg-page);
+  /* 手机 H5 适配：文字大小不随系统自动缩放，由我们的响应式代码控制 */
+  -webkit-text-size-adjust: 100%;
+}
+
+/* 标题不继承浏览器默认的粗大样式，统一走我们的字体体系 */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--color-text-primary);
+}
+
+a {
+  color: var(--color-accent-deep);
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%; /* 图片永远不超出屏幕边界（适配要求） */
+  display: block;
+}
+
+button {
+  font-family: inherit; /* 按钮文字也用全局字体，不继承系统默认 */
+  cursor: pointer;
+}
+
+/* ---------- 2. 全站通用工具类 ---------- */
+
+/* 通用卡片容器：白底、大圆角、柔和投影 */
+.ft-card {
+  background-color: var(--color-bg-card);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-lg);
+}
+
+/* 粉蹄气泡：浅粉底 + 粉边框，系统提示统一用这个风格 */
+.ft-bubble {
+  background-color: var(--color-bg-bubble);
+  border: 2px solid var(--color-highlight-deep);
+  border-radius: var(--radius-md);
+  padding: var(--space-md) var(--space-lg);
+}
+
+/* 页面级容器：限制最大宽度并居中，PC 上不显得空旷，手机上铺满 */
+.ft-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--space-lg);
+}
+
+/* 区块标题：天蓝底的小标签风格 */
+.ft-section-title {
+  display: inline-block;
+  background-color: var(--color-primary-deep);
+  color: var(--color-text-primary);
+  border-radius: var(--radius-round);
+  padding: var(--space-xs) var(--space-md);
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  margin-bottom: var(--space-md);
+}
+
+/* ---------- 3. 响应式适配（原生 CSS，无需框架） ----------
+ * 手机端（屏幕宽度 < 768px）时收紧留白，
+ * 这是 PC + H5 双端适配的第一道保障，组件内部还可以各自补充。
+ */
+@media (max-width: 768px) {
+  .ft-page {
+    padding: var(--space-md);
+  }
+  .ft-card {
+    padding: var(--space-md);
+  }
+}
+
+/* ---------- 4. 动效无障碍降级（第 6 阶段性能与体验优化） ----------
+ * 用户系统开启"减少动态效果"（prefers-reduced-motion）时，
+ * 把所有循环动画（呼吸/旋转/跳动等）降到几乎静止——
+ * 既照顾前庭敏感用户，也让低端手机省电流畅。
+ * 实现方式：把动画时长压到 0.01ms 并只播一次（标准做法），
+ * 不用逐组件写媒体查询，一处生效全站生效。
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
